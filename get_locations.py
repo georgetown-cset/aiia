@@ -11,7 +11,7 @@ geolocator = Nominatim(user_agent="city-app")
 def geolocate(city):
     """
     Finding longitudes and latitudes of cities in China
-    :param city:
+    :param city: String for the city we're finding the lat/long of
     :return:
     """
     country = "China"

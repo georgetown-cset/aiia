@@ -4,7 +4,7 @@ import matplotlib.font_manager as font_manager
 import argparse
 
 
-def plot_data(levels, totals, each_val, font_path):
+def plot_data(levels, totals, each_val, font_path, output_file):
     """
     Plot the data in a chart
     :param levels: The levels of membership on the board
@@ -38,15 +38,19 @@ def plot_data(levels, totals, each_val, font_path):
     plt.legend(prop=prop, loc="lower center")
     plt.yticks(r, levels, fontproperties=prop)
     plt.xlabel("% of Members", fontproperties=prop)
-    plt.savefig("stacked_equal_length.png")
+    plt.savefig(output_file)
     plt.show()
 
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument("output_file", type=str, help="Name of output png file")
     parser.add_argument("font_path", type=str,
                         help="Path to the appropriate custom font font on your system")
     args = parser.parse_args()
+    if "png" not in args.output_file:
+        parser.print_help()
+        exit()
     levels = ["Ordinary\n member", "Board \nmember", "Vice chair\n of board"]
     # We're hard-coding our data, which isn't great practice, but it's a very small amount of data
     # and a single visualization we want it for
@@ -56,7 +60,7 @@ def main():
     for entry in each_val.keys():
         each_val[entry] = [(i/totals[index])*100 for index, i in enumerate(each_val[entry])]
     # Note: there is one "other" company we are not charting
-    plot_data(levels, totals, each_val, args.font_path)
+    plot_data(levels, totals, each_val, args.font_path, args.output_file)
 
 
 if __name__ == "__main__":
